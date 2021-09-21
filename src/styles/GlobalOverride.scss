@@ -1,0 +1,32 @@
+@media (max-width: 640px) {
+  html {
+    font-size: 50%;
+  }
+}
+@media (min-width: 640px) {
+  html {
+    font-size: 70%;
+  }
+  .sidebar {
+    box-shadow: none !important;
+  }
+}
+@media (min-width: 1100px) {
+  html {
+    font-size: 80%;
+  }
+}
+@media (min-width: 1400px) {
+  html {
+    font-size: 100%;
+  }
+}
+
+.multi-select .select-item {
+  margin: 0.3rem 0;
+  span.item-renderer {
+    display: flex;
+    align-items: center;
+    height: 1rem;
+  }
+}
