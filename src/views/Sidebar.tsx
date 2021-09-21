@@ -52,11 +52,12 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   useEffect(() => {
     const init = async () => {
-      await getLaptopData();
-      const initialFilter = !filterCode
-        ? defaultFilter
-        : await FilterService.getFilter(filterCode);
-      setFilter(initialFilter);
+      const { items } = await getLaptopData();
+      if (!filterCode) {
+        onFilterChange(getFilteredLaptops(items));
+      } else {
+        setFilter(await FilterService.getFilter(filterCode));
+      }
       setIsLoading(false);
     };
     init();
@@ -82,7 +83,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     retailer: retailers = [],
     cpuFamily: cpuFamilies = [],
     ram: ramSizes = [],
-    items: laptops = [],
+    items = [],
     hdd: diskSizes = [],
     resolution: resolutions = [],
     size: sizes = [],
@@ -108,9 +109,10 @@ const Sidebar: React.FC<SidebarProps> = ({
   const getLaptopData = async () => {
     const response = await OfferingsService.getOfferings();
     setLaptopData(response);
+    return response;
   };
 
-  const getFilteredLaptops = () => {
+  const getFilteredLaptops = (laptops: Laptop[] = items) => {
     const filterKeys = Object.keys(filter) as FilterKey[];
     const filteredLaptops = filterKeys.reduce((filtered, key) => {
       if (key === 'vendor' || key === 'cpuFamily' || key === 'gpuVendor') {
