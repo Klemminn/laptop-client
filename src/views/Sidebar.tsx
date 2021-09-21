@@ -37,14 +37,13 @@ type SidebarProps = {
   onFilterChange(laptops: Laptop[]): void;
 };
 
-let laptops: Laptop[] = [];
-
 const Sidebar: React.FC<SidebarProps> = ({
   children,
   open,
   toggleSidebar,
   onFilterChange,
 }) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [filter, setFilter] = useState<Filter>(defaultFilter);
   const [laptopData, setLaptopData] = useState<null | OfferingsContainer>(null);
   const history = useHistory();
@@ -57,7 +56,8 @@ const Sidebar: React.FC<SidebarProps> = ({
       const initialFilter = !filterCode
         ? defaultFilter
         : await FilterService.getFilter(filterCode);
-      updateFilter(initialFilter);
+      setFilter(initialFilter);
+      setIsLoading(false);
     };
     init();
     // eslint-disable-next-line
@@ -65,10 +65,15 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   useEffect(() => {
     if (!filterCode) {
-      updateFilter(defaultFilter);
+      setFilter(defaultFilter);
     }
     // eslint-disable-next-line
   }, [filterCode]);
+
+  useEffect(() => {
+    onFilterChange(getFilteredLaptops());
+    // eslint-disable-next-line
+  }, [filter]);
 
   const isMobile = useMediaQuery({ query: '(max-width: 1000px)' });
 
@@ -77,6 +82,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     retailer: retailers = [],
     cpuFamily: cpuFamilies = [],
     ram: ramSizes = [],
+    items: laptops = [],
     hdd: diskSizes = [],
     resolution: resolutions = [],
     size: sizes = [],
@@ -101,11 +107,10 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const getLaptopData = async () => {
     const response = await OfferingsService.getOfferings();
-    laptops = response.items;
     setLaptopData(response);
   };
 
-  const getFilteredLaptops = (filter: Filter) => {
+  const getFilteredLaptops = () => {
     const filterKeys = Object.keys(filter) as FilterKey[];
     const filteredLaptops = filterKeys.reduce((filtered, key) => {
       if (key === 'vendor' || key === 'cpuFamily' || key === 'gpuVendor') {
@@ -159,11 +164,6 @@ const Sidebar: React.FC<SidebarProps> = ({
     return filteredLaptops;
   };
 
-  const updateFilter = (updated: Filter) => {
-    setFilter(updated);
-    onFilterChange(getFilteredLaptops(updated));
-  };
-
   const handleFilterChange = async (
     property: FilterKey,
     value: number | string | number[] | string[],
@@ -174,10 +174,10 @@ const Sidebar: React.FC<SidebarProps> = ({
     };
     const code = await FilterService.createFilter(updated);
     history.push(`/${code}`);
-    updateFilter(updated);
+    setFilter(updated);
   };
 
-  return (
+  return isLoading ? null : (
     <ReactSidebar
       sidebar={
         <>

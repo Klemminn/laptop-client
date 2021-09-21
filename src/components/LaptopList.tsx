@@ -143,6 +143,7 @@ const LaptopPanel: React.FC<LaptopProps> = ({ laptop }) => {
         <PriceColumn xs={2} md={3}>
           {laptop.offerings.map((offering, idx) => (
             <Price
+              key={offering.id}
               price={offering.price}
               isMain={idx === 0}
               url={offering.url}
