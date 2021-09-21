@@ -113,15 +113,15 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
 
   const getFilteredLaptops = (laptops: Laptop[] = items) => {
-    const filterKeys = Object.keys(filter) as FilterKey[];
+    const filterKeys = Object.keys(filter);
     const filteredLaptops = filterKeys.reduce((filtered, key) => {
       if (key === 'vendor' || key === 'cpuFamily' || key === 'gpuVendor') {
-        const selected = filter[key] as string[];
+        const selected = filter[key];
         return !selected.length
           ? filtered
           : filtered.filter((laptop) => selected.includes(laptop[key]));
       } else if (key === 'retailer') {
-        const selected = filter.retailer as string[];
+        const selected = filter.retailer;
         return !selected.length
           ? filtered
           : filtered.filter((laptop) => {
@@ -141,7 +141,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               selected.includes(approxScreenSize(laptop[key])),
             );
       } else if (key === 'resolution') {
-        const [lower, higher] = filter.resolution as string[];
+        const [lower, higher] = filter.resolution;
         const lowerIndex = resolutions.indexOf(lower);
         const higherIndex = resolutions.indexOf(higher);
         return lowerIndex < 0 || higherIndex < 0
@@ -151,10 +151,10 @@ const Sidebar: React.FC<SidebarProps> = ({
               return laptopIndex >= lowerIndex && laptopIndex <= higherIndex;
             });
       } else if (key === 'ram' || key === 'hdd') {
-        const selected = filter[key] as number;
+        const selected = filter[key];
         return filtered.filter((laptop) => laptop[key] >= selected);
       } else if (key === 'text') {
-        const lowercaseText = (filter.text as string).toLowerCase();
+        const lowercaseText = filter.text.toLowerCase();
         const lowercaseWords = lowercaseText.split(' ');
         return filtered.filter((laptop) => {
           const laptopString = JSON.stringify(laptop).toLowerCase();
