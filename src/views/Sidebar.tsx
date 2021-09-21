@@ -179,102 +179,104 @@ const Sidebar: React.FC<SidebarProps> = ({
     setFilter(updated);
   };
 
-  return isLoading ? null : (
+  return (
     <ReactSidebar
       sidebar={
-        <>
-          <Header showLogo={!isMobile} />
-          {!laptopData ? null : (
-            <FilterContainer>
-              <Inputs.Select
-                label="Verslun"
-                options={retailers.map((value) => ({
-                  label: value,
-                  value: value,
-                }))}
-                onChange={(value) => handleFilterChange('retailer', value)}
-                defaultValue={filter.retailer}
-                placeholder="Sía eftir verslun"
-              />
-              <Inputs.Select
-                label="Framleiðandi"
-                options={vendors.map((value) => ({
-                  label: value,
-                  value: value,
-                }))}
-                onChange={(value) => handleFilterChange('vendor', value)}
-                defaultValue={filter.vendor}
-                placeholder="Sía eftir framleiðanda"
-              />
-              <Inputs.Select
-                label="Örgjörvi"
-                options={cpuFamilies.map((value) => ({
-                  label: value,
-                  value: value.split(' - ')[1],
-                }))}
-                onChange={(value) => handleFilterChange('cpuFamily', value)}
-                defaultValue={filter.cpuFamily}
-                placeholder="Sía eftir örgjörvatýpu"
-              />
-              <Inputs.Select
-                label="Skjákort"
-                options={gpuVendors.map((value) => ({
-                  label: value,
-                  value: value,
-                }))}
-                onChange={(value) => handleFilterChange('gpuVendor', value)}
-                defaultValue={filter.gpuVendor}
-                placeholder="Sía eftir skjákorti"
-              />
-              <Inputs.Select
-                label="Skjástærð"
-                options={displaySizes.map((value) => ({
-                  label: `${value}"`,
-                  value: value,
-                }))}
-                onChange={(value) => handleFilterChange('size', value)}
-                defaultValue={filter.size}
-                placeholder="Sía eftir skjástærð"
-              />
+        isLoading ? null : (
+          <>
+            <Header showLogo={!isMobile} />
+            {!laptopData ? null : (
+              <FilterContainer>
+                <Inputs.Select
+                  label="Verslun"
+                  options={retailers.map((value) => ({
+                    label: value,
+                    value: value,
+                  }))}
+                  onChange={(value) => handleFilterChange('retailer', value)}
+                  defaultValue={filter.retailer}
+                  placeholder="Sía eftir verslun"
+                />
+                <Inputs.Select
+                  label="Framleiðandi"
+                  options={vendors.map((value) => ({
+                    label: value,
+                    value: value,
+                  }))}
+                  onChange={(value) => handleFilterChange('vendor', value)}
+                  defaultValue={filter.vendor}
+                  placeholder="Sía eftir framleiðanda"
+                />
+                <Inputs.Select
+                  label="Örgjörvi"
+                  options={cpuFamilies.map((value) => ({
+                    label: value,
+                    value: value.split(' - ')[1],
+                  }))}
+                  onChange={(value) => handleFilterChange('cpuFamily', value)}
+                  defaultValue={filter.cpuFamily}
+                  placeholder="Sía eftir örgjörvatýpu"
+                />
+                <Inputs.Select
+                  label="Skjákort"
+                  options={gpuVendors.map((value) => ({
+                    label: value,
+                    value: value,
+                  }))}
+                  onChange={(value) => handleFilterChange('gpuVendor', value)}
+                  defaultValue={filter.gpuVendor}
+                  placeholder="Sía eftir skjákorti"
+                />
+                <Inputs.Select
+                  label="Skjástærð"
+                  options={displaySizes.map((value) => ({
+                    label: `${value}"`,
+                    value: value,
+                  }))}
+                  onChange={(value) => handleFilterChange('size', value)}
+                  defaultValue={filter.size}
+                  placeholder="Sía eftir skjástærð"
+                />
 
-              <Inputs.Slider
-                label="Upplausn"
-                options={resolutions.map((value) => ({
-                  label: value,
-                  value: value,
-                }))}
-                onChange={(value: string[]) =>
-                  handleFilterChange('resolution', value)
-                }
-                defaultValue={[filter.resolution[0], filter.resolution[1]]}
-              />
+                <Inputs.Slider
+                  label="Upplausn"
+                  options={resolutions.map((value) => ({
+                    label: value,
+                    value: value,
+                  }))}
+                  onChange={(value: string[]) =>
+                    handleFilterChange('resolution', value)
+                  }
+                  defaultValue={[filter.resolution[0], filter.resolution[1]]}
+                />
 
-              <Inputs.Slider
-                label="Vinnsluminni"
-                options={ramSizes.map((value) => ({
-                  label: `${value}GB`,
-                  value: value,
-                }))}
-                defaultValue={filter.ram}
-                onChange={(value: number) => handleFilterChange('ram', value)}
-              />
-              <Inputs.Slider
-                label="Harður diskur"
-                options={diskSizes.map((value) => ({
-                  label: FormatUtils.getDiskSizeLabel(value),
-                  value: value,
-                }))}
-                defaultValue={filter.hdd}
-                onChange={(value: number) => handleFilterChange('hdd', value)}
-              />
-              <Inputs.TextInput
-                label="Frjáls textaleit"
-                defaultValue={filter.text}
-                onChange={(value) => handleFilterChange('text', value)}
-              />
-            </FilterContainer>
-          )}
-        </>
+                <Inputs.Slider
+                  label="Vinnsluminni"
+                  options={ramSizes.map((value) => ({
+                    label: `${value}GB`,
+                    value: value,
+                  }))}
+                  defaultValue={filter.ram}
+                  onChange={(value: number) => handleFilterChange('ram', value)}
+                />
+                <Inputs.Slider
+                  label="Harður diskur"
+                  options={diskSizes.map((value) => ({
+                    label: FormatUtils.getDiskSizeLabel(value),
+                    value: value,
+                  }))}
+                  defaultValue={filter.hdd}
+                  onChange={(value: number) => handleFilterChange('hdd', value)}
+                />
+                <Inputs.TextInput
+                  label="Frjáls textaleit"
+                  defaultValue={filter.text}
+                  onChange={(value) => handleFilterChange('text', value)}
+                />
+              </FilterContainer>
+            )}
+          </>
+        )
       }
       open={open}
       onSetOpen={toggleSidebar}
